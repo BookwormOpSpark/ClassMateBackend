@@ -30,8 +30,6 @@ const Expo = require('expo-server-sdk');
 const OAuth2 = google.auth.OAuth2;
 const app = express(feathers());
 const aws = require('aws-sdk');
-const multer = require('multer');
-const multerS3 = require('multer-s3');
 
 require('dotenv').load();
 
@@ -139,15 +137,10 @@ app.get('/studentInformation', (req, res) => {
 // ===============================
 app.post('/addClass', (req, res) => {
   const user = req.body.userId;
-  // const tempUser = 2;
   const session = {
     description: req.body.description,
     joinCode: req.body.joinCod
   };
-  // const tempSession = {
-  //   description: `Mr. Ledet's Fifth Grade Class`,
-  //   joinCode: 'led123'
-  // };
   sessionDB.findOrCreateSession(session, user)
     .then(result => res.status(201).send(result))
     .catch(err => console.error(err));
@@ -161,7 +154,6 @@ app.post('/upload/:participantId/:assignmentID', (req, res) => {
   const { participantId, assignmentID } = req.params;
   const newPhoto = req.files['photo'].data.toString('base64');
   const type = req.files['photo'].mimetype;
-  //const userEmail = req.params[0];
   // Uploads to cloudinary
   cloudinary.v2.uploader.upload(`data:${type};base64,${newPhoto}`, (err, photo) => {
     if (err) {
@@ -219,7 +211,6 @@ app.get('/funStuff/:id', (req, res) => {
 });
 
 app.delete('/deleteFunStuff/:id', (req, res) => {
-  // console.log(req.params, 'params')
   const id = req.params.id;
   funStuffDB.deleteFunStuff(id)
     .then(result => res.status(200).send(result))
@@ -233,7 +224,6 @@ app.delete('/deleteFunStuff/:id', (req, res) => {
 // ===============================
 
 app.post('/createEmergencyContact', (req, res) => {
-  // console.log(req.body, 'emergency contact info');
   const info = req.body.emergencyContact;
   const userId = req.body.userId;
   emergencyContactDB.createEmergencyContact(info, userId)
@@ -256,17 +246,13 @@ app.post('/createAssignment', (req, res) => {
 });
 
 app.post('/getAssignment', (req, res) => {
-  const tempSessionId = 2;
-  const sessionId = req.body.sessionId;
+  const {sessionId} = req.body;
   assignmentDB.findAssignment(sessionId)
     .then(result => res.status(201).send(result))
     .catch(err => console.error(err));
 });
 
 app.get('/checkAssignment', (req, res) => {
-  // console.log(req.query);
-  // const tempSessionId = 2;
-  // const tempAssignmentId = 5;
   const sessionId = req.query.sessionId;
   const assignmentId = req.query.assignmentId;
   return assignmentDB.specificAssignment(sessionId, assignmentId)
@@ -290,7 +276,6 @@ app.post('/joinClass', (req, res) => {
 });
 
 app.post('/classRoster', (req, res) => {
-  const tempSessionId = 2;
   const sessionId = req.body.sessionId;
   participantDB.searchParticipants(sessionId)
     .then(roster => res.status(201).send(roster))
@@ -305,8 +290,7 @@ app.post('/classRoster', (req, res) => {
 let expo = new Expo();
 
 app.post('/firstNotification', (req, res) => {
-  const {token, userID } = req.body;
-  // console.log(req.body);
+  const { token, userID } = req.body;
   if (!Expo.isExpoPushToken(token)) {
     console.error(`Push token ${token} is not a valid Expo push token`);
   }
@@ -317,11 +301,8 @@ app.post('/firstNotification', (req, res) => {
 
 // need the userid,= to retrive the token notification, query the databse
 app.post('/badgeNotification', (req, res) => {
-  const { userID, className, studentName } = req.body;
-  console.log(req.body);
-  // const tempID = 43;
-  // const token = 'ExponentPushToken[GxB8jlM1jM2-yYQ2TfaBTS]';
-  tokenDB.findToken(userID)
+  const { userId, className, studentName, teacherName } = req.body;
+  tokenDB.findToken(userId)
     .then(result => {
       const token = result.pushToken;
       if (!Expo.isExpoPushToken(token)) {
@@ -331,7 +312,7 @@ app.post('/badgeNotification', (req, res) => {
       const message = {
         to: token,
         sound: 'default',
-        body: `Congratulations ${studentName}, You Got A Badge in ${className}`,
+        body: `Congratulations ${studentName}, You Got A Badge in ${className} by teacher ${teacherName}`,
       };
       (async () => {
         try {
@@ -342,7 +323,7 @@ app.post('/badgeNotification', (req, res) => {
         res.send('receipts');
       })();
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error(err)); 
 });
 // ===============================
 
@@ -352,10 +333,9 @@ app.post('/badgeNotification', (req, res) => {
 // take the student id and the bage type
 app.post('/badges', (req, res) => {
   const { badgeId, studentId } = req.body;
-  // console.log(req.body, 'body of /badges');
+  // console.log(req.body);
   badgesDB.createBadges(badgeId, studentId)
     .then(results => {
-      // console.log(results.dataValues, 'results from badges');
       res.status(201).send(results.dataValues);
     })
     .catch(err => console.error(err));
@@ -371,7 +351,6 @@ app.get('/badges', (req, res) => {
 app.get('/badgeInfo', (req, res) => {
   badgesDB.allBadges()
     .then(results => {
-      // console.log(results);
       res.status(200).send(results);
     })
     .catch(err => console.error(err));
@@ -385,7 +364,6 @@ app.get('/dashboard', (req, res) => {
   const userId = req.query.userId;
   sessionDB.getSessions(userId)
     .then((sessionInfo) => {
-      // console.log('sessionInfo: ', sessionInfo);
       calApi.getCalendar(sessionInfo)
         .then((formattedCalendar) => {
           const reformat = {
