@@ -19,7 +19,7 @@ const createToken = (userId, token) => {
         return 'Already Created';
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => console.error(err));
 };
 
 const findToken = (userId) => {
