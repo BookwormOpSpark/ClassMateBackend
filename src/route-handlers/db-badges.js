@@ -8,6 +8,7 @@ const createBadges = (badgeId, participantId) => {
     id_badge: badgeId,
   })
     .then(result => {
+      return result;
       // console.log(result);
     })
     .catch(err => {
@@ -36,7 +37,7 @@ const findBadges = (id) => {
   })
     .then(results => {
       // console.log(results);
-      return result;
+      return results;
     })
     .catch(err => console.error(err));
 };
