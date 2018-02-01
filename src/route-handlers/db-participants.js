@@ -14,7 +14,7 @@ const addParticipant = (info) => {
   const type = 1;
   return db.Session.findAll({
     where:{
-      joinCode: info.joinCode,
+      id: info.sessionId,
     },
   })
     .then(result => {
