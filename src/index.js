@@ -9,8 +9,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
   });
   socket.on('raise-hand', (data) => {
-    console.log(data);
     io.emit(`${data.sessionID}`, { student: data.student, time: data.time });
+  });
+  socket.on('hand down', (data) =>{
+    io.emit(`${data.student}`, {message: ''});
   });
 });
 
