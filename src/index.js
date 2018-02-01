@@ -6,13 +6,11 @@ const server = app.listen(port);
 const io = require('socket.io')(server, { 'pingInterval': 2000, pingTimeout: 30000 });
 
 io.on('connection', (socket) => {
-  // console.log('User connected');
   socket.on('disconnect', () => {
-    // console.log('User disconnected');
   });
   socket.on('raise-hand', (data) => {
     console.log(data);
-    io.emit('new-message', { message: data });
+    io.emit(`${data.sessionID}`, { student: data.student, time: data.time });
   });
 });
 
