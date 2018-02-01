@@ -11,7 +11,7 @@ io.on('connection', (socket) => {
     // console.log('User disconnected');
   });
   socket.on('raise-hand', (data) => {
-    // console.log(data);
+    console.log(data);
     io.emit('new-message', { message: data });
   });
 });
