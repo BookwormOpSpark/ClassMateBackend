@@ -118,7 +118,26 @@ const findStudent = (student) => {
     if(result === null){
       return 'user not found'
     }else if (comparePassword(student.password, result.password)) {
-      return result;
+      if (result.dataValues.id_emergencyContact !== null) {
+        return db.EmergencyContact.findAll({
+          where: {
+            id: result.dataValues.id_emergencyContact,
+          },
+        })
+          .then(contact => {
+            const format = {
+              user: result.dataValues,
+              emergencyContact: contact,
+            };
+            return format;
+          })
+          .catch(err => console.error(err));
+      } else {
+        const format = {
+          user: result.dataValues,
+        };
+        return format;
+      }
     } else {
       return 'incorrect password';
     }

@@ -101,12 +101,13 @@ app.post('/studentLogin', (req, res) => {
   const student = req.body;
   userDB.findStudent(student)
     .then(dbLoginResult => {
+      console.log(dbLoginResult, 'dbLoginResult')
       if (dbLoginResult === 'user not found') {
         res.send('user not found');
       }else if(dbLoginResult === 'incorrect password'){
         res.send('incorrect password');
       }else{
-        res.send(dbLoginResult.dataValues);
+        res.send(dbLoginResult);
       }
     })
     .catch(err => {
