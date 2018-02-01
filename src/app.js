@@ -140,7 +140,7 @@ app.post('/addClass', (req, res) => {
   const user = req.body.userId;
   const session = {
     description: req.body.description,
-    joinCode: req.body.joinCod
+    joinCode: req.body.joinCode
   };
   sessionDB.findOrCreateSession(session, user)
     .then(result => res.status(201).send(result))
@@ -269,7 +269,7 @@ app.get('/checkAssignment', (req, res) => {
 app.post('/joinClass', (req, res) => {
   const participant = {
     userId: req.body.userId,
-    joinCode: req.body.joinCode
+    sessionId: req.body.sessionId
   };
   participantDB.addParticipant(participant)
     .then(result => res.status(201).send(result))
