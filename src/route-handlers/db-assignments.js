@@ -83,15 +83,15 @@ const specificAssignment = (sessionId, assignmentId) => {
           });
           // console.log(format, 'this is format from specificAssignment');
           format.forEach(le => {
-            console.log(le, 'le in db-assignment')
+            // console.log(le, 'le in db-assignment')
             results.forEach(element => {
-              console.log(element, 'el in db-assignment')
+              // console.log(element, 'el in db-assignment')
               if (element.participantId === le.id_participant) {
                 element.photoUrl = le.photoUrl;
               }
             });
           });
-          console.log(results, 'results coming out of checkAssignments');
+          // console.log(results, 'results coming out of checkAssignments');
           return results;
         })
         .catch(err => console.error(err));
