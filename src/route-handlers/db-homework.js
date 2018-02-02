@@ -13,13 +13,18 @@ const uploadHomework = (participantId, assignmentId, photoUrl) => {
 };
 
 const findHomework = (arr, assignmentId) => {
+  console.log(arr, 'arr from findHomework');
+  // console.log(assignmentId, 'assignmentId from findHomework'); 
   return db.Homework.findAll({
     where: {
       id_participant: arr,
       id_assignment: assignmentId,
     },
   })
-    .then(results => results)
+    .then(results => {
+      console.log(results, 'results from findHomework');
+      return results;
+    })
     .catch(err => console.error(err));
 }
 
