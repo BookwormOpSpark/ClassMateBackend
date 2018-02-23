@@ -101,7 +101,7 @@ app.post('/studentLogin', (req, res) => {
   const student = req.body;
   userDB.findStudent(student)
     .then(dbLoginResult => {
-      console.log(dbLoginResult, 'dbLoginResult')
+      // console.log(dbLoginResult, 'dbLoginResult')
       if (dbLoginResult === 'user not found') {
         res.send('user not found');
       }else if(dbLoginResult === 'incorrect password'){
@@ -365,8 +365,10 @@ app.get('/dashboard', (req, res) => {
   const userId = req.query.userId;
   sessionDB.getSessions(userId)
     .then((sessionInfo) => {
+      // console.log('sessionInfo: ', sessionInfo);
       calApi.getCalendar(sessionInfo)
         .then((formattedCalendar) => {
+          // console.log('formatted calendar: ', formattedCalendar);
           const reformat = {
             sessionInfo,
             formattedCalendar

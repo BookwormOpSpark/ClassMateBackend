@@ -43,16 +43,17 @@ const getCalendar = (sessionInfo) => {
             if(eventDate.date === currentDate){
                 let event = {
                     summary: '',
-                    description: '',
+                    // description: '',
                     startTime: '',
                     endTime: '',
                     location: '',
                 }
                 event.summary = calEvents[i].summary;
-                event.description = calEvents[i].description;
+                // event.description = calEvents[i].description;
                 event.startTime = convertTime(calEvents[i].start);
                 event.endTime = convertTime(calEvents[i].end);
-                event.location = calEvents[i].location.description;
+                // event.location = calEvents[i].location.description;
+                // console.log('event: ', event);
                 returnEvents.push(event);
             }
         }

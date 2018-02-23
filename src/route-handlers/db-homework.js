@@ -13,7 +13,7 @@ const uploadHomework = (participantId, assignmentId, photoUrl) => {
 };
 
 const findHomework = (arr, assignmentId) => {
-  console.log(arr, 'arr from findHomework');
+  // console.log(arr, 'arr from findHomework');
   // console.log(assignmentId, 'assignmentId from findHomework'); 
   return db.Homework.findAll({
     where: {
@@ -22,7 +22,7 @@ const findHomework = (arr, assignmentId) => {
     },
   })
     .then(results => {
-      console.log(results, 'results from findHomework');
+      // console.log(results, 'results from findHomework');
       return results;
     })
     .catch(err => console.error(err));

@@ -58,7 +58,7 @@ const deleteAssignment = (info) => {
 const checkAssignment = (sessionId) => {
   return participantDB.searchParticipants(sessionId)
     .then(participants => {
-      console.log(participants, 'participants from checkAssignment');
+      // console.log(participants, 'participants from checkAssignment');
       return participants;
     })
     .catch(err => console.error(err));
